@@ -44,7 +44,7 @@ class Main extends CI_Controller {
 	
 	public function logout() {
 		if ($this->facebook->getUser()) {
-			setcookie('fbs_'.$this->facebook->getAppId(), '', time()-100, '/', 'marketingbazar.com:8888');
+			setcookie('fbs_'.$this->facebook->getAppId(), '', time()-100, '/', 'marketingbazar.com');
 			session_destroy();
 			header('Location: /');
 		}
