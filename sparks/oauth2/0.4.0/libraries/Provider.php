@@ -127,75 +127,60 @@ abstract class OAuth2_Provider
 		
 		return $this->url_authorize().'?'.http_build_query($params);
 	}
-
-	/*
-	* Get access to the API
-	*
-	* @param	string	The access code
-	* @return	object	Success or failure along with the response details
-	*/	
-	public function access($code, $options = array())
-	{
-		$params = array(
-			'client_id' 	=> $this->client_id,
-			'client_secret' => $this->client_secret,
-			'grant_type' 	=> isset($options['grant_type']) ? $options['grant_type'] : 'authorization_code',
+		
+		/*
+	 * Get access to the API @param	string	The access code @return	object	Success or failure along with the response details
+	 */
+	public function access($code, $options = array()) {
+		$params = array (
+				'client_id' => $this->client_id,
+				'client_secret' => $this->client_secret,
+				'grant_type' => isset ( $options ['grant_type'] ) ? $options ['grant_type'] : 'authorization_code' 
 		);
-
-		switch ($params['grant_type'])
-		{
-			case 'authorization_code':
-				$params['code'] = $code;
-				$params['redirect_uri'] = isset($options['redirect_uri']) ? $options['redirect_uri'] : $this->redirect_uri;
-			break;
-
-			case 'refresh_token':
-				$params['refresh_token'] = $code;
-			break;
-		}
-
-		$response = null;	
-		$url = $this->url_access_token();
-
-		switch ($this->method)
-		{
-			case 'GET':
-
-				// Need to switch to Request library, but need to test it on one that works
-				$url .= '?'.http_build_query($params);
-				$response = file_get_contents($url);
-
-				parse_str($response, $return);
-
-			break;
-
-			case 'POST':
-
-				$postdata = http_build_query($params);
-				$opts = array(
-					'http' => array(
-						'method'  => 'POST',
-						'header'  => 'Content-type: application/x-www-form-urlencoded',
-						'content' => $postdata
-					)
-				);
-				$context  = stream_context_create($opts);
-				$response = file_get_contents($url, false, $context);
-
-				$return = get_object_vars(json_decode($response));
-
-			break;
-
-			default:
-				throw new OutOfBoundsException("Method '{$this->method}' must be either GET or POST");
-		}
-
-		if ( ! empty($return['error']))
-		{
-			throw new OAuth2_Exception($return);
+		
+		switch ($params ['grant_type']) {
+			case 'authorization_code' :
+				$params ['code'] = $code;
+				$params ['redirect_uri'] = isset ( $options ['redirect_uri'] ) ? $options ['redirect_uri'] : $this->redirect_uri;
+				break;
+			
+			case 'refresh_token' :
+				$params ['refresh_token'] = $code;
+				break;
 		}
 		
-		return OAuth2_Token::factory('access', $return);
+		$response = null;
+		$url = $this->url_access_token ();
+		
+		switch ($this->method) {
+			case 'GET' :
+				// Need to switch to Request library, but need to test it on one that works
+				$url .= '?' . http_build_query ( $params );
+				$response = file_get_contents ( $url );
+				parse_str ( $response, $return );
+				break;
+			
+			case 'POST' :
+				$postdata = http_build_query ( $params );
+				$opts = array (
+						'http' => array (
+								'method' => 'POST',
+								'header' => 'Content-type: application/x-www-form-urlencoded',
+								'content' => $postdata 
+						) 
+				);
+				$context = stream_context_create ( $opts );
+				$response = file_get_contents ( $url, false, $context );
+				$return = get_object_vars ( json_decode ( $response ) );
+				break;
+			
+			default :
+				throw new OutOfBoundsException ( "Method '{$this->method}' must be either GET or POST" );
+		}
+		if (! empty ( $return ['error'] )) {
+			throw new OAuth2_Exception ( $return );
+		}
+		return OAuth2_Token::factory ( 'access', $return );
 	}
 
 }

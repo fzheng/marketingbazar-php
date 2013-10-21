@@ -7,12 +7,12 @@
 </head>
 <body>
 	<div id="container">
-		<h1>Welcome back, <?php echo $user["name"]?> !</h1>
+		<h1>Welcome back, <?php echo $userid?> !</h1>
 		<div id="body">
-			<?php print_r($user);?>
+			<?php print_r($userid);?>
 		</div>
 		<div>
-			<a href="<?php echo $logoutUrl?>">Click to logout</a>
+			<a href="/auth/logout">Click to logout</a>
 		</div>
 		<p class="footer">
 			Page rendered in <strong>{elapsed_time}</strong> seconds
