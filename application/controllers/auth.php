@@ -18,11 +18,9 @@ class Auth extends CI_Controller {
 	}
 	
 	public function oauth($providername) {
-		$CI = & get_instance();
-		$CI->config->load("oauth",TRUE);
-		$config = $CI->config->item("oauth");
-		$key = $config[$providername]['key'];
-		$secret = $config[$providername]['secret'];
+		$this->config->load('oauth', TRUE);
+		$key = $this->config->item('oauth')[$providername]['key'];
+		$secret = $this->config->item('oauth')[$providername]['secret'];
 		$this->load->helper ( 'url' );
 		$this->load->spark ( 'oauth/0.3.1' );
 		// Create an consumer from the config
@@ -71,11 +69,9 @@ class Auth extends CI_Controller {
 	}
 	
 	public function oauth2($providername) {
-		$CI = & get_instance();
-		$CI->config->load("oauth",TRUE);
-		$config = $CI->config->item("oauth");
-		$key = $config[$providername]['key'];
-		$secret = $config[$providername]['secret'];
+		$this->config->load('oauth', TRUE);
+		$key = $this->config->item('oauth')[$providername]['key'];
+		$secret = $this->config->item('oauth')[$providername]['secret'];
 		$this->load->helper ( 'url_helper' );
 		$this->load->spark ( 'oauth2/0.4.0' );
 		$provider = $this->oauth2->provider ( $providername, array (
