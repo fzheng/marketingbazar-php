@@ -12,7 +12,7 @@
 			<?php print_r($userid);?>
 		</div>
 		<div>
-			<a href="/auth/logout">Click to logout</a>
+			<a href="/main/logout">Click to logout</a>
 		</div>
 		<p class="footer">
 			Page rendered in <strong>{elapsed_time}</strong> seconds
