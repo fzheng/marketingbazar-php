@@ -1,9 +1,9 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en"> 
 <head> 
 	<title>Marketingbazar: our slogan, our service, our future</title>
-	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9"> 
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9">
+    <meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 	<link rel="stylesheet" href="./www/css/base.css" type="text/css" media="all">
 	<!--[if lt IE 9 ]>
