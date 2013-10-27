@@ -34,13 +34,13 @@
         </div>
         <div class="slot-4-5 feature">
             <div class="row">
-                <h3><a href="/main/oauth2/facebook">Login with Facebook</a></h3>
+                <img class="auth_button" src="./www/images/facebooklogin.png" alt="Login with Facebook" onclick="window.location='/main/oauth2/facebook'"/>
             </div>
             <div class="row">
-                <h3><a href="/main/oauth/linkedin">Login with Linkedin</a></h3>
+                <img class="auth_button" src="./www/images/linkedinlogin.png" alt="Login with Linkedin" onclick="window.location='/main/oauth/linkedin'"/>
             </div>
             <div class="row">
-                <h3><a href="/main/oauth2/google">Login with Google</a></h3>
+                <img class="auth_button" src="./www/images/googlelogin.png" alt="Login with Google" onclick="window.location='/main/oauth2/google'"/>
             </div>
         </div>
     </div>
@@ -76,7 +76,7 @@
 	</div>
 </div>
 <div class="empty"></div>
-<div class="row footer">
+<div class="row footer" style="padding-top: 2em; padding-bottom: 1em;">
     <div class="grid">
         <div class="row">
             <div class="slot-0-1">

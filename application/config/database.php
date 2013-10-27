@@ -48,6 +48,8 @@
 $active_group = 'default';
 $active_record = TRUE;
 
+//$db['default']['hostname'] = 'mysql.marketingbazar.com';
+//$db['default']['username'] = 'fzheng01';
 $db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'root';
 $db['default']['password'] = 'beijing2013';

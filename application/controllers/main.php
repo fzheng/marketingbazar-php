@@ -20,15 +20,15 @@ class Main extends CI_Controller {
 		if (is_null($userid)) {
 			$this->load->view('auth');
 		} else {
-			$data['userid'] = $userid;
-			$this->load->view('home', $data);
+			$this->load->view('home', $sessionData);
 		}
 	}
 
 	public function oauth($providername) {
 		$this->config->load('oauth', TRUE);
-		$key = $this->config->item('oauth')[$providername]['key'];
-		$secret = $this->config->item('oauth')[$providername]['secret'];
+        $oauthConfig = $this->config->item('oauth');
+		$key = $oauthConfig[$providername]['key'];
+		$secret = $oauthConfig[$providername]['secret'];
 		$this->load->helper('url');
 		$this->load->spark('oauth/0.3.1');
 		// Create an consumer from the config
@@ -73,8 +73,9 @@ class Main extends CI_Controller {
 
 	public function oauth2($providername) {
 		$this->config->load('oauth', TRUE);
-		$key = $this->config->item('oauth')[$providername]['key'];
-		$secret = $this->config->item('oauth')[$providername]['secret'];
+        $oauthConfig = $this->config->item('oauth');
+		$key = $oauthConfig[$providername]['key'];
+		$secret = $oauthConfig[$providername]['secret'];
 		$this->load->helper('url_helper');
 		$this->load->spark('oauth2/0.4.0');
 		$provider = $this->oauth2->provider($providername, array('id' => $key, 'secret' => $secret));
@@ -88,22 +89,23 @@ class Main extends CI_Controller {
 				$user = $provider->get_user_info($token);
 				$this->saveData($providername, $token, $user);
 			} catch (OAuth2_Exception $e) {
-				show_error('That didnt work: ' . $e);
+				show_error('That did not work: ' . $e);
 			}
 		}
 	}
 
 	public function logout() {
 		$sessionData = $this->session->all_userdata();
-		$providername = array_key_exists('providename', $sessionData) ? $sessionData['providename'] : '';
+		$providername = array_key_exists('provider', $sessionData) ? $sessionData['provider'] : '';
 		$token = array_key_exists('token', $sessionData) ? $sessionData['token'] : '';
 		$this->executeLogout($providername, $token);
 	}
 
 	private function executeLogout($providername, $token) {
 		$this->config->load('oauth', TRUE);
-		$key = $this->config->item('oauth')[$providername]['key'];
-		$secret = $this->config->item('oauth')[$providername]['secret'];
+        $oauthConfig = $this->config->item('oauth');
+		$key = $oauthConfig[$providername]['key'];
+		$secret = $oauthConfig[$providername]['secret'];
 		$this->load->helper('url_helper');
 		$redirect_uri = base_url();
 		if ($providername == "facebook") {
@@ -141,8 +143,18 @@ class Main extends CI_Controller {
 		$description = array_key_exists('description', $user) ? $user['description'] : null;
 		$profileimage = array_key_exists('image', $user) ? $user['image'] : null;
 		$email = array_key_exists('email', $user) ? $user['email'] : '';
-		$userobj = array('username' => $nickname, 'uid' => $uid, 'name' => $name, 'email' => $email, 'location' => $location, 'token' => $usertoken, 'secret' => $usersecret, 'provider' => $providername, 'summary' => $description,
-				'profileurl' => $profileimage);
+		$userobj = array(
+            'username' => $nickname,
+            'uid' => $uid,
+            'name' => $name,
+            'email' => $email,
+            'location' => $location,
+            'token' => $usertoken,
+            'secret' => $usersecret,
+            'provider' => $providername,
+            'summary' => $description,
+            'profileimage' => $profileimage
+        );
 
 		$this->load->helper('url');
 		// $result = $this->db->query ( "select * from users where uid=? and provider=?", array (
@@ -160,9 +172,8 @@ class Main extends CI_Controller {
 		// $id = $this->db->insert_id ();
 		// }
 		$this->load->library('session');
+        $this->session->set_userdata($userobj);
 		$this->session->set_userdata('userid', $id);
-		$this->session->set_userdata('providename', $providername);
-		$this->session->set_userdata('token', $usertoken);
 		// redirect ( '/profile/editprofile', 'refresh' );
 		redirect('/', 'refresh');
 	}
