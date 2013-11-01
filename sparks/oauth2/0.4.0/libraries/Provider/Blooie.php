@@ -39,7 +39,9 @@ class OAuth2_Provider_Blooie extends OAuth2_Provider
 				return 'https://bloo.ie/oauth/access_token';
 
 			default:
+                exit('What the crap?!');
 		}
+    }
 
 	public function get_user_info(OAuth2_Token_Access $token)
 	{

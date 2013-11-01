@@ -56,4 +56,4 @@ class OAuth_Provider_Linkedin extends OAuth_Provider {
 		);
 	}
 
-} // End Provider_Dropbox
+} // End Provider_Linkedin
