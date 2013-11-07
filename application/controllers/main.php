@@ -16,8 +16,8 @@ class Main extends CI_Controller {
 
 	function index() {
 		$sessionData = $this->session->all_userdata();
-		$userid = array_key_exists('userid', $sessionData) ? $sessionData['userid'] : null;
-		if (is_null($userid)) {
+		$id = array_key_exists('id', $sessionData) ? $sessionData['id'] : null;
+		if (is_null($id)) {
 			$this->load->view('auth');
 		} else {
 			$this->load->view('home', $sessionData);
@@ -102,6 +102,7 @@ class Main extends CI_Controller {
 	}
 
 	private function executeLogout($providername, $token) {
+        $this->load->library('session');
 		$this->config->load('oauth', TRUE);
         $oauthConfig = $this->config->item('oauth');
 		$key = $oauthConfig[$providername]['key'];
@@ -133,17 +134,18 @@ class Main extends CI_Controller {
 		}
 	}
 
-	private function saveData($providername, $token, $user) {
-		$usertoken = $token->access_token;
-		$usersecret = isset($token->secret) ? $token->secret : null;
-		$uid = $user['uid'];
-		$nickname = array_key_exists('nickname', $user) ? $user['nickname'] : $uid;
-		$name = array_key_exists('name', $user) ? $user['name'] : null;
-		$location = array_key_exists('location', $user) ? $user['location'] : null;
-		$description = array_key_exists('description', $user) ? $user['description'] : null;
-		$profileimage = array_key_exists('image', $user) ? $user['image'] : null;
-		$email = array_key_exists('email', $user) ? $user['email'] : '';
-		$userobj = array(
+    private function saveData($providername, $token, $user)
+    {
+        $usertoken = $token->access_token;
+        $usersecret = isset($token->secret) ? $token->secret : null;
+        $uid = $user['uid'];
+        $nickname = array_key_exists('nickname', $user) ? $user['nickname'] : $uid;
+        $name = array_key_exists('name', $user) ? $user['name'] : null;
+        $location = array_key_exists('location', $user) ? $user['location'] : null;
+        $description = array_key_exists('description', $user) ? $user['description'] : null;
+        $profileimage = array_key_exists('image', $user) ? $user['image'] : null;
+        $email = array_key_exists('email', $user) ? $user['email'] : '';
+        $userobj = array(
             'username' => $nickname,
             'uid' => $uid,
             'name' => $name,
@@ -156,25 +158,34 @@ class Main extends CI_Controller {
             'profileimage' => $profileimage
         );
 
-		$this->load->helper('url');
-		// $result = $this->db->query ( "select * from users where uid=? and provider=?", array (
-		// $uid,
-		// $providername
-		// ) );
+        $this->load->helper('url');
+        $result = $this->db->query("select * from auth where uid=? and provider=?", array(
+            $uid,
+            $providername
+        ));
 
-		$id = 0;
-		// if ($result->row ()) {
-		// $this->db->where ( 'id', $result->row ()->id );
-		// $this->db->update ( 'users', $userobj );
-		// $id = $result->row ()->id;
-		// } else {
-		// $this->db->insert ( 'users', $userobj );
-		// $id = $this->db->insert_id ();
-		// }
-		$this->load->library('session');
+        if ($result->row()) {
+            $this->db->where('id', $result->row()->id);
+            $this->db->update('auth', $userobj);
+            $id = $result->row()->id;
+        } else {
+            $this->db->insert('auth', $userobj);
+            $id = $this->db->insert_id();
+        }
+
+        $this->load->library('session');
         $this->session->set_userdata($userobj);
-		$this->session->set_userdata('userid', $id);
-		// redirect ( '/profile/editprofile', 'refresh' );
-		redirect('/', 'refresh');
+        $this->session->set_userdata('id', $id);
+
+        $result = $this->db->query("select * from ci_sessions where session_id=?", $this->session->userdata('session_id'));
+        if ($result->row()) {
+            $this->db->where('session_id', $this->session->userdata('session_id'));
+            $this->db->update('ci_sessions', array('id' => $this->session->userdata('id')));
+        } else {
+            show_error('current session id does not exist');
+        }
+
+        // redirect ( '/profile/editprofile', 'refresh' );
+        redirect('/', 'refresh');
 	}
 }
