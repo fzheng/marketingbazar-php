@@ -15,6 +15,10 @@ class Main extends CI_Controller {
 	}
 
 	function index() {
+        $this->load->helper('cookie');
+        if(!$this->input->cookie(md5("http://www.marketingbazar.com"), TRUE)) {
+            header('HTTP/1.0 404 Not Found'); echo '404 = 400 + 4 = 4 * 101 = 1616 / 4 = YOU'; exit();
+        }
 		$sessionData = $this->session->all_userdata();
 		$id = array_key_exists('id', $sessionData) ? $sessionData['id'] : null;
 		if (is_null($id)) {

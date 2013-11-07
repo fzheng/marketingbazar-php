@@ -1,0 +1,15 @@
+{
+    "name": "Marketingbazar Access",
+    "version": "0.0.1",
+    "manifest_version": 2,
+    "content_security_policy": "script-src 'self'; connect-src *; object-src 'self'",
+    "browser_action": {
+      "default_icon": "images/icon19.png",
+      "default_title": "Marketingbazar Access",
+      "default_popup": "popup.html"
+    },
+    "permissions": [
+        "cookies",
+        "http://*.marketingbazar.com/"
+    ]
+}
