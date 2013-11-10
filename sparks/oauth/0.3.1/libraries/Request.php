@@ -467,7 +467,7 @@ class OAuth_Request {
 			$options[CURLOPT_CONNECTTIMEOUT] = $this->timeout;
 		}
 
-		if (ENVIRONMENT === 'development')
+		if (ENVIRONMENT === 'dev')
 		{
 			$options[CURLOPT_SSL_VERIFYPEER] = false;
 		}
