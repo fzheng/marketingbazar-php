@@ -1,23 +1,15 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-/**
- *
- * @author Feng Zheng
- *        
- *         Linkedin API resource map: https://developer.linkedin.com/documents/linkedin-api-resource-map
- *        
- */
 class Competitions extends CI_Controller {
 
-	public function __construct()
-	{
+	public function __construct() {
 		parent::__construct();
 		// Do some default work: no return
 	}
 	
 	function index() {
 		$data['title'] = 'Competitions';
-		$data['description'] = 'Should show a competitions front page';
+		$data['description'] = 'Your list of competitions';
 		$this->load->view('competitions/index', $data);
 	}
 	
@@ -26,22 +18,44 @@ class Competitions extends CI_Controller {
 		
 		$this->load->library('form_validation');
 		
-		if ($this->form_validation->run() == FALSE)
-		{
+		if ($this->form_validation->run() == FALSE) {
 			$this->load->view('competitions/create');
-		}
-		else
-		{
+		} else {
+			$this->load->model('competition_model');
+			$data = $this->_get_post_data();
+			$result = $this->competition_model->insert($data);
+			if($result === TRUE) {
+			} else {
+			}
 			redirect('competitions');
 		}
+	}
+	
+	function _get_post_data() {
+		$data = array(
+			'name' => $this->input->post('name'),
+			'description' => $this->input->post('description'),
+			'statement' => $this->input->post('statement'),
+			'project_type' => $this->input->post('project_type'),				
+			'scope' => $this->input->post('scope'),
+			'platform' => $this->input->post('platform'),
+			'must_haves' => $this->input->post('must_haves'),
+			'nice_haves' => $this->input->post('nice_haves'),
+			'not_haves' => $this->input->post('not_haves'),
+			'criteria' => $this->input->post('criteria'),
+			'deliverables' => $this->input->post('deliverables'),
+			'begin_at' => $this->input->post('begin_at'),
+			'end_at' => $this->input->post('end_at'),
+			'award' => $this->input->post('award')								
+		);
+		return $data;
 	}
 	
 	function _check_valid_name($name) {
 		if ($name == 'test') {
 			$this->form_validation->set_message('_check_valid_name', 'The %s field can not be the word "test"');
 			return FALSE;
-		}
-		else {
+		} else {
 			return TRUE;
 		}
 		
