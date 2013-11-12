@@ -10,6 +10,8 @@ class Competitions extends CI_Controller {
 	function index() {
 		$data['title'] = 'Competitions';
 		$data['description'] = 'Your list of competitions';
+		$this->load->model('competition_model');
+		$data['records'] = $this->competition_model->retrieve_by_user_id($this->_current_user_id());
 		$this->load->view('competitions/index', $data);
 	}
 	
@@ -19,7 +21,9 @@ class Competitions extends CI_Controller {
 		$this->load->library('form_validation');
 		
 		if ($this->form_validation->run() == FALSE) {
-			$this->load->view('competitions/create');
+			$result['validation_error'] = TRUE;
+			$result['action'] = 'create';
+			$this->load->view('competitions/form', $result);
 		} else {
 			$this->load->model('competition_model');
 			$data = $this->_get_post_data();
@@ -30,9 +34,37 @@ class Competitions extends CI_Controller {
 			redirect('competitions');
 		}
 	}
+
+	function edit($id) {
+		$this->load->model('competition_model');
+		$record = $this->competition_model->retrieve_entry($this->_current_user_id(), intval($id));
+		$record['action'] = 'update';
+		$this->load->view('competitions/form', $record);
+	}
+
+	function update() {
+		$this->load->helper(array('form', 'url'));
+	
+		$this->load->library('form_validation');
+	
+		if ($this->form_validation->run() == FALSE) {
+			$result['validation_error'] = TRUE;
+			$result['action'] = 'update';
+			$this->load->view('competitions/form', $result);
+		} else {
+			$this->load->model('competition_model');
+			$data = $this->_get_post_data();
+			$result = $this->competition_model->update_entry(intval($this->input->post('id')), $data);
+			if($result === TRUE) {
+			} else {
+			}
+			redirect('competitions');
+		}
+	}	
 	
 	function _get_post_data() {
 		$data = array(
+			'user_id' => $this->_current_user_id(),
 			'name' => $this->input->post('name'),
 			'description' => $this->input->post('description'),
 			'statement' => $this->input->post('statement'),
@@ -49,6 +81,10 @@ class Competitions extends CI_Controller {
 			'award' => $this->input->post('award')								
 		);
 		return $data;
+	}
+	
+	function _current_user_id() {
+		return 0;	
 	}
 	
 	function _check_valid_name($name) {

@@ -146,6 +146,11 @@
 							'field' => 'award',
 							'label' => 'Award',
 							'rules' => 'trim|required'
+					),
+					array(
+							'field' => 'id',
+							'label' => 'id',
+							'rules' => 'trim'
 					)
 			)													
 	);
