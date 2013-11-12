@@ -5,12 +5,12 @@ class Competitions extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
 		// Do some default work: no return
+		$this->load->model('competition_model');
 	}
 	
 	function index() {
 		$data['title'] = 'Competitions';
 		$data['description'] = 'Your list of competitions';
-		$this->load->model('competition_model');
 		$data['records'] = $this->competition_model->retrieve_by_user_id($this->_current_user_id());
 		$this->load->view('competitions/index', $data);
 	}
@@ -25,7 +25,6 @@ class Competitions extends CI_Controller {
 			$result['action'] = 'create';
 			$this->load->view('competitions/form', $result);
 		} else {
-			$this->load->model('competition_model');
 			$data = $this->_get_post_data();
 			$result = $this->competition_model->insert($data);
 			if($result === TRUE) {
@@ -36,7 +35,6 @@ class Competitions extends CI_Controller {
 	}
 
 	function edit($id) {
-		$this->load->model('competition_model');
 		$record = $this->competition_model->retrieve_entry($this->_current_user_id(), intval($id));
 		$record['action'] = 'update';
 		$this->load->view('competitions/form', $record);
@@ -52,7 +50,6 @@ class Competitions extends CI_Controller {
 			$result['action'] = 'update';
 			$this->load->view('competitions/form', $result);
 		} else {
-			$this->load->model('competition_model');
 			$data = $this->_get_post_data();
 			$result = $this->competition_model->update_entry(intval($this->input->post('id')), $data);
 			if($result === TRUE) {
