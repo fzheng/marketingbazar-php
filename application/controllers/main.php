@@ -15,17 +15,45 @@ class Main extends CI_Controller {
 	}
 
 	function index() {
-        $this->load->helper('cookie');
-        if(defined('ENVIRONMENT') && ENVIRONMENT === "prod" && !$this->input->cookie(md5("http://www.marketingbazar.com"), TRUE)) {
-            header('HTTP/1.0 404 Not Found'); echo '404 = 400 + 4 = 4 * 101 = 1616 / 4 = YOU'; exit();
+        $config = Array(
+            'mailtype' => 'html',
+            'protocol' => 'smtp',
+            'smtp_host' => 'mail.marketingbazar.com',
+            'smtp_port' => 587,
+            'smtp_user' => 'mail@marketingbazar.com',
+            'charset' => 'UTF-8',
+            'smtp_pass' => 'beijing2013'
+        );
+        $this->load->library("email");
+        $this->email->initialize($config);
+        $list = Array(
+            'Feng' => 'summitzf@gmail.com',
+            'Yue' => 'summitzf@yahoo.com',
+            'Elaine' => 'elaineliyanling@gmail.com',
+            'Huy' => 'huyngu100@gmail.com',
+            'Eric' => 'echoichoi@gmail.com'
+        );
+        foreach ($list as $name => $address) {
+            $this->email->clear();
+            $this->email->to($address);
+            $this->email->from("mail@marketingbazar.com", "Marketingbazar");
+            $this->email->subject("Welcome to Marketingbazar ". $name);
+            $message = $this->load->view('welcome', Array('name' => $name), TRUE);
+            $this->email->message($message);
+            $this->email->send();
         }
-		$sessionData = $this->session->all_userdata();
-		$id = array_key_exists('id', $sessionData) ? $sessionData['id'] : null;
-		if (is_null($id)) {
-			$this->load->view('auth');
-		} else {
-			$this->load->view('home', $sessionData);
-		}
+
+//        $this->load->helper('cookie');
+//        if(defined('ENVIRONMENT') && ENVIRONMENT === "prod" && !$this->input->cookie(md5("http://www.marketingbazar.com"), TRUE)) {
+//            header('HTTP/1.0 404 Not Found'); echo '404 = 400 + 4 = 4 * 101 = 1616 / 4 = YOU'; exit();
+//        }
+//		$sessionData = $this->session->all_userdata();
+//		$id = array_key_exists('id', $sessionData) ? $sessionData['id'] : null;
+//		if (is_null($id)) {
+//			$this->load->view('auth');
+//		} else {
+//			$this->load->view('home', $sessionData);
+//		}
 	}
 
 	public function oauth($providername) {
@@ -163,17 +191,17 @@ class Main extends CI_Controller {
         );
 
         $this->load->helper('url');
-        $result = $this->db->query("select * from auth where uid=? and provider=?", array(
+        $result = $this->db->query("select * from auths where uid=? and provider=?", array(
             $uid,
             $providername
         ));
 
         if ($result->row()) {
             $this->db->where('id', $result->row()->id);
-            $this->db->update('auth', $userobj);
+            $this->db->update('auths', $userobj);
             $id = $result->row()->id;
         } else {
-            $this->db->insert('auth', $userobj);
+            $this->db->insert('auths', $userobj);
             $id = $this->db->insert_id();
         }
 
@@ -181,10 +209,10 @@ class Main extends CI_Controller {
         $this->session->set_userdata($userobj);
         $this->session->set_userdata('id', $id);
 
-        $result = $this->db->query("select * from ci_sessions where session_id=?", $this->session->userdata('session_id'));
+        $result = $this->db->query("select * from sessions where session_id=?", $this->session->userdata('session_id'));
         if ($result->row()) {
             $this->db->where('session_id', $this->session->userdata('session_id'));
-            $this->db->update('ci_sessions', array('id' => $this->session->userdata('id')));
+            $this->db->update('sessions', array('id' => $this->session->userdata('id')));
         } else {
             show_error('current session id does not exist');
         }
