@@ -48,12 +48,27 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-//$db['default']['hostname'] = 'mysql.marketingbazar.com';
-//$db['default']['username'] = 'fzheng01';
-$db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'root';
-$db['default']['password'] = 'beijing2013';
-$db['default']['database'] = 'marketingbazar_com';
+if (defined('ENVIRONMENT')){
+    switch(ENVIRONMENT) {
+        case "dev":
+            $db['default']['hostname'] = 'localhost';
+            $db['default']['username'] = 'root';
+            $db['default']['password'] = 'beijing2013';
+            $db['default']['database'] = 'marketingbazar_com';
+            break;
+        case "prod":
+            $db['default']['hostname'] = 'mysql.marketingbazar.com';
+            $db['default']['username'] = 'fzheng01';
+            $db['default']['password'] = 'beijing2013';
+            $db['default']['database'] = 'marketingbazar_com';
+            break;
+        default:
+            die("database environment error");
+    }
+} else {
+    die("database is unable to detect application environment");
+}
+
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;
