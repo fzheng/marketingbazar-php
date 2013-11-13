@@ -34,7 +34,10 @@ if (defined('ENVIRONMENT'))
 	{
 		case 'dev':
 			error_reporting(E_ALL);
-            break;
+			
+			// Display errors in output
+			ini_set('display_errors', 1);
+			break;
 	
 		case 'stg':
             error_reporting(E_ALL);
