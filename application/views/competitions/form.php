@@ -8,7 +8,7 @@
 <script src="/www/js/jquery-ui-timepicker-addon.js"></script>
 </head>
 <body>
-<h1>Edit Your Competition</h1>
+<h1>Competition Form</h1>
 
 <?php if(isset($validation_error) && $validation_error === TRUE) echo validation_errors(); ?>
 
