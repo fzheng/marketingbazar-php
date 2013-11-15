@@ -43,6 +43,14 @@
                 <p><? echo empty($summary) ? '' : $summary; ?></p>
             </div>
             <hr/>
+             <div class="row">
+                <a href="/competitions">View Your Competitions</a>
+            </div>
+            <hr/>
+            <div class="row">
+                <a href="/accounts/profile">Your Profile</a>
+            </div>
+            <hr/>           
             <div class="row">
                 <a href="/main/logout">SIGN OUT</a>
             </div>
