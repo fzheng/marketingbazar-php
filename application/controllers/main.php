@@ -163,17 +163,17 @@ class Main extends CI_Controller {
         );
 
         $this->load->helper('url');
-        $result = $this->db->query("select * from auth where uid=? and provider=?", array(
+        $result = $this->db->query("select * from auths where uid=? and provider=?", array(
             $uid,
             $providername
         ));
 
         if ($result->row()) {
             $this->db->where('id', $result->row()->id);
-            $this->db->update('auth', $userobj);
+            $this->db->update('auths', $userobj);
             $id = $result->row()->id;
         } else {
-            $this->db->insert('auth', $userobj);
+            $this->db->insert('auths', $userobj);
             $id = $this->db->insert_id();
         }
 

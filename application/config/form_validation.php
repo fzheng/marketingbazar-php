@@ -152,6 +152,100 @@
 							'label' => 'id',
 							'rules' => 'trim'
 					)
+			),
+		'accounts/profile' => array(
+					array(
+							'field' => 'first_name',
+							'label' => 'First Name',
+							'rules' => 'trim|required'
+					),
+					array(
+							'field' => 'last_name',
+							'label' => 'Last Name',
+							'rules' => 'trim|required'
+					),
+					array(
+							'field' => 'city',
+							'label' => 'City',
+							'rules' => 'trim'
+					),
+					array(
+							'field' => 'state_province',
+							'label' => 'State/Province',
+							'rules' => 'trim'
+					),
+					array(
+							'field' => 'country',
+							'label' => 'Country',
+							'rules' => 'trim|required'
+					),
+					array(
+							'field' => 'postal_code',
+							'label' => 'Postal Code',
+							'rules' => 'trim'
+					),
+					array(
+							'field' => 'phone',
+							'label' => 'Phone Number',
+							'rules' => 'trim'
+					),
+			
+					array(
+							'field' => 'email',
+							'label' => 'Email',
+							'rules' => 'trim|required|valid_email'
+					),
+					array(
+							'field' => 'website',
+							'label' => 'Website',
+							'rules' => 'trim'
+					),
+			
+					array(
+							'field' => 'background',
+							'label' => 'Background',
+							'rules' => 'trim'
+					),
+					array(
+							'field' => 'education',
+							'label' => 'Education',
+							'rules' => 'trim'
+					),
+					array(
+							'field' => 'experience',
+							'label' => 'Experience',
+							'rules' => 'trim'
+					),
+					array(
+							'field' => 'skills',
+							'label' => 'Skills',
+							'rules' => 'trim'
+					),
+					array(
+							'field' => 'facebook',
+							'label' => 'Facebook link',
+							'rules' => 'trim'
+					),
+					array(
+							'field' => 'linkedin',
+							'label' => 'LinkedIn link',
+							'rules' => 'trim'
+					),
+					array(
+							'field' => 'twitter',
+							'label' => 'Twitter link',
+							'rules' => 'trim'
+					),
+					array(
+							'field' => 'notifications',
+							'label' => 'Notifications',
+							'rules' => 'trim'
+					),		
+					array(
+							'field' => 'id',
+							'label' => 'id',
+							'rules' => 'trim'
+					)
 			)													
 	);
 
