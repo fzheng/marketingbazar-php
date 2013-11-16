@@ -53,8 +53,22 @@
 		</p>
 		<div>
 			<h1>Comments:</h1>
-			<hr/>
-			
+			<?php if (!empty($comments)): ?>
+			<?php foreach($comments as $comment): ?>
+            	<hr/>	
+            	<p>User Commented at: <?= $comment['last_modified_time'] ?></p>
+            	<p><?= nl2br($comment['text']) ?><p> 
+        	<?php endforeach; ?>
+			<?php endif; ?>
+				<hr/>
+		</div>
+		<div>
+			<h2>Add Comment:</h2>
+			<form action="/competitions/comment" method="post" accept-charset="utf-8">
+				<textarea cols="100" rows="10" name="comment"></textarea>
+				<input type="hidden" name="competition_id" value="<?= $record['id'] ?>">
+				<div><input type="submit" value="Add Comment" /></div>
+			</form>
 		</div>
 	</body>
 </html>

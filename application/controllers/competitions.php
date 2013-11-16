@@ -65,8 +65,24 @@ class Competitions extends CI_Controller {
 	}
 	
 	function wall($competition_id) {
+		$this->load->model('comment_model');
 		$data['record'] = $this->competition_model->get_competition($competition_id);
+		$data['comments'] = $this->comment_model->retrieve_all_from_competition($competition_id);
 		$this->load->view('competitions/wall', $data);
+	}
+	
+	function comment() {
+		$this->load->model('comment_model');
+		$this->load->helper('url');
+		$data['user_id'] = $this->_current_user_id();
+		$data['competition_id'] = intval($this->input->post('competition_id'));
+		$data['text'] = trim($this->input->post('comment'));
+		if(empty($data['text'])) {
+			redirect('competitions/wall/' . $data['competition_id']);
+			exit;
+		}
+		$this->comment_model->add_comment($data);
+		redirect('competitions/wall/' . $data['competition_id']);
 	}
 	
 	function _get_post_data() {
