@@ -181,12 +181,21 @@ class Main extends CI_Controller {
         $this->session->set_userdata($userobj);
         $this->session->set_userdata('id', $id);
 
-        $result = $this->db->query("select * from ci_sessions where session_id=?", $this->session->userdata('session_id'));
+        $sessionobj = array(
+            'id' => $this->session->userdata('session_id'),
+            'auth_id' => $id,
+            'ip_address' => $this->session->userdata('ip_address'),
+            'user_agent' => $this->session->userdata('user_agent'),
+            'last_activity' => $this->session->userdata('last_activity'),
+            'user_data' => http_build_query($this->session->all_userdata())
+        );
+
+        $result = $this->db->query("select * from sessions where id=?", $this->session->userdata('session_id'));
         if ($result->row()) {
-            $this->db->where('session_id', $this->session->userdata('session_id'));
-            $this->db->update('ci_sessions', array('id' => $this->session->userdata('id')));
+            $this->db->where('id', $this->session->userdata('session_id'));
+            $this->db->update('sessions', $sessionobj);
         } else {
-            show_error('current session id does not exist');
+            $this->db->insert('sessions', $sessionobj);
         }
 
         // redirect ( '/profile/editprofile', 'refresh' );

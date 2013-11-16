@@ -24,14 +24,13 @@ CREATE TABLE IF NOT EXISTS users (
 ) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COMMENT='users accounts in marketingbazar';
 
 CREATE TABLE IF NOT EXISTS sessions (
-  session_id varchar(40) DEFAULT '0' NOT NULL,
+  id varchar(40) DEFAULT '0' NOT NULL,
   auth_id INT(11) unsigned NOT NULL,
   ip_address varchar(45) DEFAULT '0' NOT NULL,
   user_agent varchar(120) NOT NULL,
   last_activity int(10) unsigned DEFAULT 0 NOT NULL,
   user_data text NOT NULL,
-  PRIMARY KEY (session_id),
-  KEY last_activity_idx (last_activity),
+  PRIMARY KEY (id),
   FOREIGN KEY (auth_id) REFERENCES auths(id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='table to cache users sessions';
 
@@ -95,3 +94,29 @@ CREATE TABLE IF NOT EXISTS attendees (
   FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY (solution_id) REFERENCES solutions(id) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='attendees table';
+
+CREATE TABLE IF NOT EXISTS profiles (
+  id INT(11) unsigned NOT NULL AUTO_INCREMENT,
+  user_id INT(11) unsigned NOT NULL,
+  first_name VARCHAR(128) DEFAULT NULL,
+  last_name VARCHAR(128) DEFAULT NULL,
+  city VARCHAR(128) DEFAULT NULL,
+  state_province VARCHAR(128) DEFAULT NULL,
+  country VARCHAR(128) DEFAULT NULL,
+  postal_code VARCHAR(128) DEFAULT NULL,
+  phone VARCHAR(128) DEFAULT NULL,
+  email VARCHAR(128) DEFAULT NULL,
+  website VARCHAR(255) DEFAULT NULL,
+  logo VARCHAR(255) DEFAULT NULL,
+  background VARCHAR(255) DEFAULT NULL,
+  education VARCHAR(255) DEFAULT NULL,
+  experience VARCHAR(255) DEFAULT NULL,
+  skills VARCHAR(255) DEFAULT NULL,
+  facebook VARCHAR(128) DEFAULT NULL,
+  linkedin VARCHAR(128) DEFAULT NULL,
+  twitter VARCHAR(128) DEFAULT NULL,
+  notifications ENUM('email', 'sms'),
+  PRIMARY KEY (id),
+  UNIQUE(user_id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='profiles table';
