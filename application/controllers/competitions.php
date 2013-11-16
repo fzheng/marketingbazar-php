@@ -57,7 +57,17 @@ class Competitions extends CI_Controller {
 			}
 			redirect('competitions');
 		}
-	}	
+	}
+
+	function search() {
+		$data['records'] = $this->competition_model->get_active_competitions();
+		$this->load->view('competitions/board', $data);	
+	}
+	
+	function wall($competition_id) {
+		$data['record'] = $this->competition_model->get_competition($competition_id);
+		$this->load->view('competitions/wall', $data);
+	}
 	
 	function _get_post_data() {
 		$data = array(
