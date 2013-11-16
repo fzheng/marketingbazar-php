@@ -187,7 +187,7 @@ class Main extends CI_Controller {
             'ip_address' => $this->session->userdata('ip_address'),
             'user_agent' => $this->session->userdata('user_agent'),
             'last_activity' => $this->session->userdata('last_activity'),
-            'user_data' => $this->session->userdata('user_data')
+            'user_data' => http_build_query($this->session->all_userdata())
         );
 
         $result = $this->db->query("select * from sessions where id=?", $this->session->userdata('session_id'));
