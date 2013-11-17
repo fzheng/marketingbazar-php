@@ -1,7 +1,18 @@
 USE "marketingbazar_com";
 
+CREATE TABLE IF NOT EXISTS users (
+  id INT(11) unsigned NOT NULL AUTO_INCREMENT,
+  username VARCHAR(64) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  pwd_salt VARCHAR(512) NOT NULL,
+  email_salt VARCHAR(512) NOT NULL,
+  user_type ENUM('regular', 'admin') DEFAULT 'regular',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COMMENT='users accounts in marketingbazar';
+
 CREATE TABLE IF NOT EXISTS auths (
   id INT(11) unsigned NOT NULL AUTO_INCREMENT,
+  user_id INT(11) unsigned NOT NULL,
   username VARCHAR(64) NOT NULL,
   uid VARCHAR(128) NOT NULL,
   name VARCHAR(128) NOT NULL,
@@ -12,16 +23,9 @@ CREATE TABLE IF NOT EXISTS auths (
   provider VARCHAR(16) NOT NULL,
   summary VARCHAR(512) DEFAULT NULL,
   profileimage VARCHAR(1024) DEFAULT NULL,
-  PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='users oauth accounts';
-
-CREATE TABLE IF NOT EXISTS users (
-  id INT(11) unsigned NOT NULL AUTO_INCREMENT,
-  auth_id INT(11) unsigned NOT NULL,
-  user_type ENUM('customer', 'consultant', 'admin'),
   PRIMARY KEY (id),
-  FOREIGN KEY (auth_id) REFERENCES auths(id) ON UPDATE CASCADE ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COMMENT='users accounts in marketingbazar';
+  FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='users oauth accounts';
 
 CREATE TABLE IF NOT EXISTS sessions (
   id varchar(40) DEFAULT '0' NOT NULL,

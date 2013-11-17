@@ -20,8 +20,8 @@ class Main extends CI_Controller {
             header('HTTP/1.0 404 Not Found'); echo '404 = 400 + 4 = 4 * 101 = 1616 / 4 = YOU'; exit();
         }
 		$sessionData = $this->session->all_userdata();
-		$id = array_key_exists('id', $sessionData) ? $sessionData['id'] : null;
-		if (is_null($id)) {
+		$user_id = array_key_exists('user_id', $sessionData) ? $sessionData['user_id'] : null;
+		if (is_null($user_id)) {
 			$this->load->view('auth');
 		} else {
 			$this->load->view('home', $sessionData);
@@ -171,19 +171,22 @@ class Main extends CI_Controller {
         if ($result->row()) {
             $this->db->where('id', $result->row()->id);
             $this->db->update('auths', $userobj);
-            $id = $result->row()->id;
+            $auth_id = $result->row()->id;
         } else {
             $this->db->insert('auths', $userobj);
-            $id = $this->db->insert_id();
+            $auth_id = $this->db->insert_id();
         }
 
         $this->load->library('session');
         $this->session->set_userdata($userobj);
-        $this->session->set_userdata('id', $id);
+
+        // TODO go to users table to find matched user_id
+        $user_id = $auth_id;
+        $this->session->set_userdata('user_id', $user_id);
 
         $sessionobj = array(
             'id' => $this->session->userdata('session_id'),
-            'auth_id' => $id,
+            'auth_id' => $auth_id,
             'ip_address' => $this->session->userdata('ip_address'),
             'user_agent' => $this->session->userdata('user_agent'),
             'last_activity' => $this->session->userdata('last_activity'),
@@ -198,7 +201,6 @@ class Main extends CI_Controller {
             $this->db->insert('sessions', $sessionobj);
         }
 
-        // redirect ( '/profile/editprofile', 'refresh' );
         redirect('/', 'refresh');
 	}
 }

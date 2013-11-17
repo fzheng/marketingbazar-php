@@ -31,7 +31,7 @@
             </div>
             <hr/>
             <div class="row">
-                <p><? echo empty($id) ? 'EMPTY ID' : $id; ?></p>
+                <p><? echo empty($user_id) ? 'EMPTY ID' : $user_id; ?></p>
             </div>
             <div class="row">
                 <p><? echo empty($location) ? '' : $location; ?></p>
