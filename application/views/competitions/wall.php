@@ -56,7 +56,7 @@
 			<?php if (!empty($comments)): ?>
 			<?php foreach($comments as $comment): ?>
             	<hr/>	
-            	<p>User Commented at: <?= $comment['last_modified_time'] ?></p>
+            	<p>Alias <?= $alias ?> Commented at: <?= $comment['last_modified_time'] ?></p>
             	<p><?= nl2br($comment['text']) ?><p> 
         	<?php endforeach; ?>
 			<?php endif; ?>

@@ -67,6 +67,7 @@ class Competitions extends CI_Controller {
 	function wall($competition_id) {
 		$this->load->model('comment_model');
 		$data['record'] = $this->competition_model->get_competition($competition_id);
+		$data['alias'] = $this->_generate_alias($data['record']['user_id'], $data['record']['id']);
 		$data['comments'] = $this->comment_model->retrieve_all_from_competition($competition_id);
 		$this->load->view('competitions/wall', $data);
 	}
@@ -83,6 +84,12 @@ class Competitions extends CI_Controller {
 		}
 		$this->comment_model->add_comment($data);
 		redirect('competitions/wall/' . $data['competition_id']);
+	}
+	
+	function _generate_alias($user_id, $competition_id) {
+		$hash = md5($user_id . $competition_id);
+		$alias = preg_replace("/[0-9]+/", "", $hash);
+		return substr($alias, 0, 5);		
 	}
 	
 	function _get_post_data() {
