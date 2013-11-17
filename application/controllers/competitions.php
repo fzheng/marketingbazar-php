@@ -6,17 +6,18 @@ class Competitions extends CI_Controller {
 		parent::__construct();
 		// Do some default work: no return
 		$this->load->model('competition_model');
+		$this->load->helper('url');
 	}
 	
 	function index() {
-		$data['title'] = 'Competitions';
-		$data['description'] = 'Your list of competitions';
+		$this->load->model('attendee_model');
 		$data['records'] = $this->competition_model->retrieve_by_user_id($this->_current_user_id());
+		$data['attendees'] = $this->attendee_model->joined_competitions($this->_current_user_id()); 
 		$this->load->view('competitions/index', $data);
 	}
 	
 	function create() {
-		$this->load->helper(array('form', 'url'));
+		$this->load->helper('form');
 		
 		$this->load->library('form_validation');
 		
@@ -41,7 +42,7 @@ class Competitions extends CI_Controller {
 	}
 
 	function update() {
-		$this->load->helper(array('form', 'url'));
+		$this->load->helper('form');
 	
 		$this->load->library('form_validation');
 	
@@ -74,7 +75,6 @@ class Competitions extends CI_Controller {
 	
 	function comment() {
 		$this->load->model('comment_model');
-		$this->load->helper('url');
 		$data['user_id'] = $this->_current_user_id();
 		$data['competition_id'] = intval($this->input->post('competition_id'));
 		$data['text'] = trim($this->input->post('comment'));
@@ -84,6 +84,14 @@ class Competitions extends CI_Controller {
 		}
 		$this->comment_model->add_comment($data);
 		redirect('competitions/wall/' . $data['competition_id']);
+	}
+	
+	function signup() {
+		$this->load->model('attendee_model');
+		$user_id = intval($this->_current_user_id());
+		$competition_id = intval($this->input->post('competition_id'));
+		$this->attendee_model->add($user_id, $competition_id);
+		redirect('competitions/search');
 	}
 	
 	function _generate_alias($user_id, $competition_id) {

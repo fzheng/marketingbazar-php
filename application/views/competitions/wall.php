@@ -2,6 +2,12 @@
 	<body>
 		<h1>Competition: <?= $record['name'] ?></h1>
 		<p>
+			<form action="/competitions/signup" method="post">
+				<input type="submit" value="Sign Up" />
+				<input type="hidden" name="competition_id" value="<?= $record['id'] ?>" />
+			</form>	
+		</p>
+		<p>
 			<div>
 				<h5>Start Time: <?= $record['begin_at']?></h5>
 				<h5>End Time: <?= $record['end_at']?></h5>
