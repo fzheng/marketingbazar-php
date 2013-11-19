@@ -54,7 +54,7 @@ class Accounts extends CI_Controller {
 	}
 	
 	function _current_user_id() {
-		return 0;	
+		return 1;	
 	}
 	
 }
