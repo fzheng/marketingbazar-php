@@ -23,8 +23,7 @@ CREATE TABLE IF NOT EXISTS auths (
   provider VARCHAR(16) NOT NULL,
   summary VARCHAR(512) DEFAULT NULL,
   profileimage VARCHAR(1024) DEFAULT NULL,
-  PRIMARY KEY (id),
-  FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='users oauth accounts';
 
 CREATE TABLE IF NOT EXISTS sessions (
@@ -34,8 +33,7 @@ CREATE TABLE IF NOT EXISTS sessions (
   user_agent varchar(120) NOT NULL,
   last_activity int(10) unsigned DEFAULT 0 NOT NULL,
   user_data text NOT NULL,
-  PRIMARY KEY (id),
-  FOREIGN KEY (auth_id) REFERENCES auths(id) ON UPDATE CASCADE ON DELETE CASCADE
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='table to cache users sessions';
 
 CREATE TABLE IF NOT EXISTS competitions (
@@ -56,36 +54,30 @@ CREATE TABLE IF NOT EXISTS competitions (
   end_at DATETIME DEFAULT NULL,
   award VARCHAR(255) DEFAULT NULL,
   deleted TINYINT(1) DEFAULT 0,
-  PRIMARY KEY (id),
-  FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='competitions table';
 
 CREATE TABLE IF NOT EXISTS comments (
   id INT(11) unsigned NOT NULL AUTO_INCREMENT,
   competition_id INT(11) unsigned NOT NULL,
   user_id INT(11) unsigned NOT NULL,
-  create_time int(10) unsigned DEFAULT 0 NOT NULL,
-  last_modified_time int(10) unsigned DEFAULT 0 NOT NULL,
+  last_modified_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   text longtext DEFAULT NULL,
   has_attachment boolean DEFAULT false,
-  PRIMARY KEY (id),
-  FOREIGN KEY (competition_id) REFERENCES competitions(id) ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='comments table';
 
 CREATE TABLE IF NOT EXISTS attachments (
   id INT(11) unsigned NOT NULL AUTO_INCREMENT,
   comment_id INT(11) unsigned NOT NULL,
   content BLOB DEFAULT NULL,
-  PRIMARY KEY (id),
-  FOREIGN KEY (comment_id) REFERENCES comments(id) ON UPDATE CASCADE ON DELETE CASCADE
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='attachments table';
 
 CREATE TABLE IF NOT EXISTS solutions (
   id INT(11) unsigned NOT NULL AUTO_INCREMENT,
   user_id INT(11) unsigned NOT NULL,
-  PRIMARY KEY (id),
-  FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='solutions table';
 
 CREATE TABLE IF NOT EXISTS attendees (
@@ -94,9 +86,7 @@ CREATE TABLE IF NOT EXISTS attendees (
   user_id INT(11) unsigned NOT NULL,
   solution_id INT(11) unsigned NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (competition_id) REFERENCES competitions(id) ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY (solution_id) REFERENCES solutions(id) ON UPDATE CASCADE ON DELETE CASCADE
+  UNIQUE (user_id, competition_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='attendees table';
 
 CREATE TABLE IF NOT EXISTS profiles (
@@ -121,6 +111,5 @@ CREATE TABLE IF NOT EXISTS profiles (
   twitter VARCHAR(128) DEFAULT NULL,
   notifications ENUM('email', 'sms'),
   PRIMARY KEY (id),
-  UNIQUE(user_id),
-  FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+  UNIQUE(user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='profiles table';

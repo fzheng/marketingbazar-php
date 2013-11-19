@@ -51,6 +51,18 @@ class Competition_model extends CI_Model {
   	$query = $this->db->query($sql, array($user_id, $id));
   	return $query->row_array();
   }
+  
+  function get_active_competitions() {
+  	$sql = "SELECT id, name, begin_at, end_at FROM competitions ORDER BY end_at";
+  	$query = $this->db->query($sql);
+  	return $query->result_array();
+  }
+  
+  function get_competition($id) {
+  	$sql = "SELECT * from competitions WHERE id = ?";
+  	$query = $this->db->query($sql, $id);
+  	return $query->row_array();
+  }
 
   function get_row_count() {
     //return $this->db->count_all($this->table);
