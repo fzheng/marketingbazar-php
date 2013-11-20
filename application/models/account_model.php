@@ -29,6 +29,8 @@ class Account_model extends CI_Model {
   		if($this->db->_error_message()) {
   			return FALSE;
   		} else {
+  			$this->load->library('scorecard');
+  			$this->scorecard->update('complete_profile', $post_data['user_id']);
   			return TRUE;
   		}
   	}

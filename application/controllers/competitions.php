@@ -70,6 +70,9 @@ class Competitions extends CI_Controller {
 		$data['record'] = $this->competition_model->get_competition($competition_id);
 		$data['alias'] = $this->_generate_alias($data['record']['user_id'], $data['record']['id']);
 		$data['comments'] = $this->comment_model->retrieve_all_from_competition($competition_id);
+		if($data['record']['user_id'] !== $this->_current_user_id()) {
+			$data['show_sign_up'] = true;
+		}
 		$this->load->view('competitions/wall', $data);
 	}
 	
