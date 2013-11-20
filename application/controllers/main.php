@@ -23,9 +23,13 @@ class Main extends CI_Controller {
 		$user_id = array_key_exists('user_id', $sessionData) ? $sessionData['user_id'] : null;
 		if (is_null($user_id)) {
 			$this->load->view('auth');
-		} else {
-			$this->load->view('home', $sessionData);
 		}
+        else if ($user_id == 0) {
+            $this->load->view('signup', $sessionData);
+        }
+        else {
+            $this->load->view('home', $sessionData);
+        }
 	}
 
 	public function oauth($providername) {
@@ -97,6 +101,51 @@ class Main extends CI_Controller {
 			}
 		}
 	}
+
+    public function login() {
+        if (isset($_POST["email"])) {
+            $result = $this->db->query("select * from users where email = ? and pwd_salt = ?", array($_POST["email"], $_POST["password"]));
+        } else {
+            $result = $this->db->query("select * from users where username = ? and pwd_salt = ?", array($_POST["username"], $_POST["password"]));
+        }
+        if ($result->row()) {
+            $this->load->library('session');
+            $user_id = $result->row()->id;
+            $authObj = array (
+                'user_id' => $user_id
+            );
+            $this->db->where('id', $this->session->userdata('auth_id'));
+            $this->db->update('auths', $authObj);
+            $this->session->set_userdata('user_id', $user_id);
+            echo '{"result": true}';
+        } else {
+            echo '{"result": false, "message": "login failed"}';
+        }
+    }
+
+    public function register() {
+        $userObj = array (
+            'username' => $_POST['username'],
+            'email' => $_POST['email'],
+            'pwd_salt' => $_POST['password'],
+            'email_salt' => ''
+        );
+        $result = $this->db->query("select * from users where username = ? or email = ?", array($userObj['username'], $userObj['email']));
+        if ($result->row()) {
+            echo '{"result" : false, "message": "user already exists"}';
+        } else {
+            $this->load->library('session');
+            $this->db->insert("users", $userObj);
+            $user_id = $this->db->insert_id();
+            $authObj = array (
+                'user_id' => $user_id
+            );
+            $this->db->where('id', $this->session->userdata('auth_id'));
+            $this->db->update('auths', $authObj);
+            $this->session->set_userdata('user_id', $user_id);
+            echo '{"result": true}';
+        }
+    }
 
 	public function logout() {
 		$sessionData = $this->session->all_userdata();
@@ -180,8 +229,13 @@ class Main extends CI_Controller {
         $this->load->library('session');
         $this->session->set_userdata($userobj);
 
-        // TODO go to users table to find matched user_id
-        $user_id = $auth_id;
+        $result = $this->db->query("select * from auths where id=?", $auth_id);
+        if ($result->row()) {
+            $user_id = $result->row()->user_id;
+        } else {
+            $user_id = 0;
+        }
+        $this->session->set_userdata('auth_id', $auth_id);
         $this->session->set_userdata('user_id', $user_id);
 
         $sessionobj = array(
