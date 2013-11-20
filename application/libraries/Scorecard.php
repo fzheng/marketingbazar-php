@@ -36,6 +36,14 @@ class Scorecard {
     	}
     }
     
+    public function rank($user_id) {
+    	return $this->CI->score_model->rank($user_id);
+    }
+    
+    public function score($user_id) {
+    	return $this->CI->score_model->score($user_id);
+    }
+    
 }
 
 ?>

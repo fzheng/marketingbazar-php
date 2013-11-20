@@ -24,6 +24,9 @@ class Main extends CI_Controller {
 		if (is_null($user_id)) {
 			$this->load->view('auth');
 		} else {
+			$this->load->library('scorecard');
+			$sessionData['score'] = $this->scorecard->score($user_id);
+			$sessionData['rank'] = $this->scorecard->rank($user_id);
 			$this->load->view('home', $sessionData);
 		}
 	}

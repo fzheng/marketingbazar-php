@@ -34,6 +34,12 @@
                 <p><? echo empty($user_id) ? 'EMPTY ID' : $user_id; ?></p>
             </div>
             <div class="row">
+                <p>Points: <?= $score ?></p>
+            </div>
+            <div class="row">
+                <p>Ranking: <?= $rank ?></p>
+            </div>                        
+            <div class="row">
                 <p><? echo empty($location) ? '' : $location; ?></p>
             </div>
             <div class="row">
