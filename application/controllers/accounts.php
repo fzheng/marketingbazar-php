@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Accounts extends CI_Controller {
+class Accounts extends Sessions_Controller {
 
 	public function __construct() {
 		parent::__construct();
@@ -51,10 +51,6 @@ class Accounts extends CI_Controller {
 			'notifications' => $this->input->post('notifications'),
 		);
 		return $data;
-	}
-	
-	function _current_user_id() {
-		return 1;	
 	}
 	
 }

@@ -1,12 +1,14 @@
 <html>
 	<body>
 		<h1>Competition: <?= $record['name'] ?></h1>
+		<?php if(isset($show_sign_up) && $show_sign_up === true):?>
 		<p>
 			<form action="/competitions/signup" method="post">
 				<input type="submit" value="Sign Up" />
 				<input type="hidden" name="competition_id" value="<?= $record['id'] ?>" />
 			</form>	
 		</p>
+		<?php endif; ?>
 		<p>
 			<div>
 				<h5>Start Time: <?= $record['begin_at']?></h5>
