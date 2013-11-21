@@ -11,9 +11,17 @@
     <link rel="stylesheet" href="./www/css/720_grid.css" type="text/css" media="screen and (min-width: 720px)">
     <link rel="stylesheet" href="./www/css/986_grid.css" type="text/css" media="screen and (min-width: 986px)">
     <link rel="stylesheet" href="./www/css/1236_grid.css" media="screen and (min-width: 1236px)" >
+    <link rel="stylesheet" href="./www/css/modal.css" type="text/css" media="all">
     <script type="text/javascript" src="./www/js/picturefill.js"></script>
 </head>
 <body>
+<div id="openModal" class="modalDialog">
+    <div>
+        <a href="#close" title="Close" class="close">X</a>
+        <h2>Please verify your email</h2>
+        <p>Click here to resend the verification code</p>
+    </div>
+</div>
 <div class="banner-wrap">
     <div class="banner">
         <h3>Welcome to Marketingbazar Dashboard, <? echo empty($name) ? 'Guest' : $name;?></h3>
