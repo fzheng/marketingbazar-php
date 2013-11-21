@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Competitions extends CI_Controller {
+class Competitions extends Sessions_Controller {
 
 	public function __construct() {
 		parent::__construct();
@@ -124,9 +124,6 @@ class Competitions extends CI_Controller {
 		return $data;
 	}
 	
-	function _current_user_id() {
-		return 1;	
-	}
 	
 	function _check_valid_name($name) {
 		if ($name == 'test') {

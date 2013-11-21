@@ -28,10 +28,9 @@ class Main extends CI_Controller {
             $this->load->view('signup', $sessionData);
         }
         else {
-            $this->load->view('home', $sessionData);
-            $this->load->library('scorecard');
-            $sessionData['score'] = $this->scorecard->score($user_id);
-            $sessionData['rank'] = $this->scorecard->rank($user_id);
+        	$this->load->library('scorecard');
+        	$sessionData['score'] = $this->scorecard->score($user_id);
+        	$sessionData['rank'] = $this->scorecard->rank($user_id);
             $this->load->view('home', $sessionData);
         }
 	}
@@ -138,8 +137,8 @@ class Main extends CI_Controller {
         if ($result->row()) {
             echo '{"result" : false, "message": "user already exists"}';
         } else {
-            $this->load->library('session');
-            $this->db->insert("users", $userObj);
+			$this->load->library('session');
+			$this->db->insert("users", $userObj);
             $user_id = $this->db->insert_id();
             $authObj = array (
                 'user_id' => $user_id
@@ -147,6 +146,11 @@ class Main extends CI_Controller {
             $this->db->where('id', $this->session->userdata('auth_id'));
             $this->db->update('auths', $authObj);
             $this->session->set_userdata('user_id', $user_id);
+            
+            // add a score record for the user
+            $this->load->library('scorecard');
+            $this->scorecard->create_user_score($user_id);
+            
             echo '{"result": true}';
         }
     }
