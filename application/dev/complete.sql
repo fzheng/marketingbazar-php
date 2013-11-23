@@ -77,6 +77,13 @@ CREATE TABLE IF NOT EXISTS attachments (
 CREATE TABLE IF NOT EXISTS solutions (
   id INT(11) unsigned NOT NULL AUTO_INCREMENT,
   user_id INT(11) unsigned NOT NULL,
+  competition_id INT(11) unsigned NOT NULL,
+  file_name VARCHAR(128) NOT NULL,
+  file_path VARCHAR(255) NOT NULL,
+  title VARCHAR(255) DEFAULT NULL,
+  first_place TINYINT(1) DEFAULT 0,
+  second_place TINYINT(1) DEFAULT 0,
+  third_place TINYINT(1) DEFAULT 0,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='solutions table';
 
