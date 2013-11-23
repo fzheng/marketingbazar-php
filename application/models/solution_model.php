@@ -21,6 +21,12 @@ class Solution_model extends CI_Model {
   	$query = $this->db->query($sql, array($user_id, $competition_id));
   	return $query->result_array();
   }
+  
+  public function get_solutions_for_competition($competition_id) {
+  	$sql = 'SELECT solutions.id, solutions.competition_id, solutions.file_name, solutions.title, users.username FROM solutions JOIN users ON solutions.user_id = users.id WHERE competition_id = ?';
+  	$query = $this->db->query($sql, array($competition_id));
+  	return $query->result_array();
+  }
    
   public function delete($user_id, $solution_id)
   {

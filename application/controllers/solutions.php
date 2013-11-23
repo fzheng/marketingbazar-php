@@ -17,6 +17,19 @@ class Solutions extends Sessions_Controller {
 		$this->load->view('solutions/submit', $data);
 	}
 	
+	function show($competition_id) {
+		$data['competition_id'] = $competition_id;
+		$this->load->model('competition_model');
+		$is_owner = $this->competition_model->is_owner($this->_current_user_id(), $competition_id);
+		if(!$is_owner) {
+			$data['error_msg'] = 'You are not allowed to view solutions for this competition!';
+			$this->load->view('solutions/show', $data);
+		} else {
+			$data['solutions'] = $this->solution_model->get_solutions_for_competition($competition_id);
+			$this->load->view('solutions/show', $data);
+		}		
+	}
+	
 	function upload() {
 		$file_element_name = 'solution';
 		$status = 'success'; 
@@ -70,6 +83,50 @@ class Solutions extends Sessions_Controller {
 			throw new Exception('Test');
 		}
 		redirect('competitions');
+	}
+	
+	function download($competition_id, $solution_id) {
+		$this->load->model('competition_model');
+		$is_owner = $this->competition_model->is_owner($this->_current_user_id(), $competition_id);
+		if(!$is_owner) {
+			$data['error_msg'] = 'You are not allowed to view this solution!';
+			$this->load->view('solutions/show', $data);
+		} else {
+			$solution = $this->solution_model->get_solution($solution_id);
+			$this->_download_file($solution->file_path);
+		}		
+	}
+	
+	function _download_file($filename) {
+		$file_extension = strtolower(substr(strrchr($filename,"."),1));
+		
+		switch ($file_extension) {
+			case "pdf": $ctype="application/pdf"; break;
+			case "zip": $ctype="application/zip"; break;
+			case "doc": $ctype="application/msword"; break;
+			case "xls": $ctype="application/vnd.ms-excel"; break;
+			case "ppt": $ctype="application/vnd.ms-powerpoint"; break;
+			case "gif": $ctype="image/gif"; break;
+			case "png": $ctype="image/png"; break;
+			case "jpe": case "jpeg":
+			case "jpg": $ctype="image/jpg"; break;
+			default: $ctype="application/force-download";
+		}
+		
+		if (!file_exists($filename)) {
+			die("NO FILE HERE");
+		}
+		
+		header("Pragma: public");
+		header("Expires: 0");
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+		header("Cache-Control: private",false);
+		header("Content-Type: $ctype");
+		header("Content-Disposition: attachment; filename=\"".basename($filename)."\";");
+		header("Content-Transfer-Encoding: binary");
+		header("Content-Length: ".@filesize($filename));
+		set_time_limit(0);
+		@readfile("$filename") or die("File not found.");		
 	}
 	
 	function _get_insert_data($data) {

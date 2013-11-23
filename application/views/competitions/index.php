@@ -18,7 +18,10 @@
             		<td><?php echo $record['name']?></td>
             		<td><?php echo $record['begin_at']?></td>
             		<td><?php echo $record['end_at']?></td>
-                	<td><a href="/competitions/edit/<?= $record['id']?>">Edit</a></td>
+                	<td>
+                	<a href="/competitions/edit/<?= $record['id']?>">Edit</a> &nbsp;&nbsp;
+                	<a href="/solutions/show/<?= $record['id']?>">Submitted Solutions</a>
+                	</td>
             	</tr> 
         	<?php endforeach; ?>
 			</table>
