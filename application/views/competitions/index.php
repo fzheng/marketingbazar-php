@@ -42,7 +42,7 @@
             		<td><?php echo $attendee['name']?></td>
             		<td><?php echo $attendee['begin_at']?></td>
             		<td><?php echo $attendee['end_at']?></td>
-                	<td><a href="/competitions/sol_submit/<?= $attendee['competition_id'] ?>">Submit Solution</a></td>
+                	<td><a href="/solutions/submit/<?= $attendee['competition_id'] ?>">Submit Solution</a></td>
             	</tr> 
         	<?php endforeach; ?>
 			</table>
