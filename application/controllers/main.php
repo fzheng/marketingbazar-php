@@ -16,7 +16,7 @@ class Main extends CI_Controller {
 
 	function index() {
         $this->load->helper('cookie');
-        if(defined('ENVIRONMENT') && ENVIRONMENT === "prod" && !$this->input->cookie(md5("https://www.marketingbazar.com"), TRUE)) {
+        if(defined('ENVIRONMENT') && ENVIRONMENT === "prod" && !$this->input->cookie(md5("http://www.marketingbazar.com"), TRUE)) {
             header('HTTP/1.0 404 Not Found'); echo '404 = 400 + 4 = 4 * 101 = 1616 / 4 = YOU'; exit();
         }
 		$sessionData = $this->session->all_userdata();
