@@ -77,6 +77,13 @@ CREATE TABLE IF NOT EXISTS attachments (
 CREATE TABLE IF NOT EXISTS solutions (
   id INT(11) unsigned NOT NULL AUTO_INCREMENT,
   user_id INT(11) unsigned NOT NULL,
+  competition_id INT(11) unsigned NOT NULL,
+  file_name VARCHAR(128) NOT NULL,
+  file_path VARCHAR(255) NOT NULL,
+  title VARCHAR(255) DEFAULT NULL,
+  first_place TINYINT(1) DEFAULT 0,
+  second_place TINYINT(1) DEFAULT 0,
+  third_place TINYINT(1) DEFAULT 0,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='solutions table';
 
@@ -113,3 +120,32 @@ CREATE TABLE IF NOT EXISTS profiles (
   PRIMARY KEY (id),
   UNIQUE(user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='profiles table';
+
+CREATE TABLE IF NOT EXISTS scorecards (
+  id INT(11) unsigned NOT NULL AUTO_INCREMENT,
+  user_id INT(11) unsigned NOT NULL,
+  five_day_visit INT(11) DEFAULT 0,
+  facebook_connect INT(11) DEFAULT 0,
+  twitter_connect INT(11) DEFAULT 0,
+  linkedin_connect INT(11) DEFAULT 0,
+  refer_friends INT(11) DEFAULT 0,
+  complete_profile INT(11) DEFAULT 0,
+  project_signup INT(11) DEFAULT 0,
+  solution_submission INT(11) DEFAULT 0,
+  fail_submission INT(11) DEFAULT 0,
+  third_place INT(11) DEFAULT 0,
+  second_place INT(11) DEFAULT 0,
+  first_place INT(11) DEFAULT 0,
+  written_reviews INT(11) DEFAULT 0,
+  PRIMARY KEY (id),
+  UNIQUE(user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='scorecards table';
+
+CREATE TABLE IF NOT EXISTS scores (
+  id INT(11) unsigned NOT NULL AUTO_INCREMENT,
+  user_id INT(11) unsigned NOT NULL,
+  score INT(11) DEFAULT 0,
+  rank INT(11) DEFAULT 0,
+  PRIMARY KEY (id),
+  UNIQUE(user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='scores table';

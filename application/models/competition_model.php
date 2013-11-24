@@ -67,6 +67,21 @@ class Competition_model extends CI_Model {
   function get_row_count() {
     //return $this->db->count_all($this->table);
   }
+  
+  function is_owner($user_id, $competition_id) {
+  	$row = $this->db->select()
+  	->from($this->table)
+  	->where('id', $competition_id)
+  	->where('user_id', $user_id)
+  	->get()
+  	->row();
+  	
+  	if(!empty($row)) {
+  		return true;
+  	} else {
+  		return false;
+  	}
+  }
 
 
 }
