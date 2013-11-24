@@ -86,7 +86,7 @@
                 <p><a href="/">Privacy Policy</a></p>
             </div>
             <div class="slot-4-5">
-                <p>&copy; <a href="http://www.marketingbazar.com">Marketingbazar 2013</a></p>
+                <p>&copy; <a href="https://www.marketingbazar.com">Marketingbazar 2013</a></p>
             </div>
         </div>
     </div>

@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://www.marketingbazar.com/';
+$config['base_url']	= 'https://www.marketingbazar.com/';
 
 /*
 |--------------------------------------------------------------------------

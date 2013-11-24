@@ -5,8 +5,8 @@ RewriteRule ^(application|system|\.svn) index.php/$1 [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php/$1 [QSA,L]
-RewriteCond %{HTTP_HOST} ^[^.]+\.[^.]+$
-RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [L,R=301]
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
 
 #in dreamhost the settings are
 #===============================

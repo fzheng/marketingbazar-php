@@ -1,6 +1,6 @@
 "use strict";
 
-var url = "http://www.marketingbazar.com";
+var url = "https://www.marketingbazar.com";
 var cookieName = CryptoJS.MD5(url).toString();
 var cookieManager = {
     set: function () {
