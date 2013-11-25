@@ -13,7 +13,7 @@ class Competitions extends Sessions_Controller {
 		$this->load->model('attendee_model');
 		$data['records'] = $this->competition_model->retrieve_by_user_id($this->_current_user_id());
 		$data['attendees'] = $this->attendee_model->joined_competitions($this->_current_user_id()); 
-		$this->load->view('competitions/index', $data);
+		$this->_load_complete_view('competitions/index', $data);
 	}
 	
 	function create() {
@@ -24,7 +24,7 @@ class Competitions extends Sessions_Controller {
 		if ($this->form_validation->run() == FALSE) {
 			$result['validation_error'] = TRUE;
 			$result['action'] = 'create';
-			$this->load->view('competitions/form', $result);
+			$this->_load_complete_view('competitions/form', $result);
 		} else {
 			$data = $this->_get_post_data();
 			$result = $this->competition_model->insert($data);
@@ -38,7 +38,7 @@ class Competitions extends Sessions_Controller {
 	function edit($id) {
 		$record = $this->competition_model->retrieve_entry($this->_current_user_id(), intval($id));
 		$record['action'] = 'update';
-		$this->load->view('competitions/form', $record);
+		$this->_load_complete_view('competitions/form', $record);
 	}
 
 	function update() {
@@ -49,7 +49,7 @@ class Competitions extends Sessions_Controller {
 		if ($this->form_validation->run() == FALSE) {
 			$result['validation_error'] = TRUE;
 			$result['action'] = 'update';
-			$this->load->view('competitions/form', $result);
+			$this->_load_complete_view('competitions/form', $result);
 		} else {
 			$data = $this->_get_post_data();
 			$result = $this->competition_model->update_entry(intval($this->input->post('id')), $data);
@@ -62,7 +62,7 @@ class Competitions extends Sessions_Controller {
 
 	function search() {
 		$data['records'] = $this->competition_model->get_active_competitions();
-		$this->load->view('competitions/board', $data);	
+		$this->_load_complete_view('competitions/board', $data);	
 	}
 	
 	function wall($competition_id) {
@@ -73,7 +73,7 @@ class Competitions extends Sessions_Controller {
 		if($data['record']['user_id'] !== $this->_current_user_id()) {
 			$data['show_sign_up'] = true;
 		}
-		$this->load->view('competitions/wall', $data);
+		$this->_load_complete_view('competitions/wall', $data);
 	}
 	
 	function comment() {
@@ -126,8 +126,8 @@ class Competitions extends Sessions_Controller {
 	
 	
 	function _check_valid_name($name) {
-		if ($name == 'test') {
-			$this->form_validation->set_message('_check_valid_name', 'The %s field can not be the word "test"');
+		if ($name === '') {
+			$this->form_validation->set_message('_check_valid_name', 'The %s field can not be the word blank');
 			return FALSE;
 		} else {
 			return TRUE;

@@ -1,9 +1,4 @@
-<!doctype html>
-<html>
-<head>
-   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-</head>
-<body>
+
    <h1>Solutions</h1>
    <div id="files">
 	<?php if(isset($error_msg)): ?>
@@ -35,5 +30,3 @@
    	  <?php endif; ?>
 	<?php endif; ?>
    </div>
-</body>
-</html>

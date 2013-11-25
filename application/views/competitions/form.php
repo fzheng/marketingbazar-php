@@ -1,13 +1,10 @@
-<html>
-<head>
-<title>Competition Form</title>
+
 <link rel="stylesheet" type="text/css" href="/www/css/jquery-ui-1.9.2.custom.css">
 <link rel="stylesheet" type="text/css" href="/www/css/jquery-ui-timepicker-addon.css">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
 <script src="/www/js/jquery-ui-timepicker-addon.js"></script>
-</head>
-<body>
+
 <h1>Competition Form</h1>
 
 <?php if(isset($validation_error) && $validation_error === TRUE) echo validation_errors(); ?>
@@ -130,5 +127,3 @@ $(function() {
 		$('#end_at').datetimepicker(config.dateTimePicker);
 });
 </script>
-</body>
-</html>
