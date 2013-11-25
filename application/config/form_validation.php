@@ -71,7 +71,7 @@
 					array(
 							'field' => 'award',
 							'label' => 'Award',
-							'rules' => 'trim|required'
+							'rules' => 'trim|required|is_numeric|max_length[9]'
 					)
 			),
 		'competitions/update' => array(
@@ -145,7 +145,7 @@
 					array(
 							'field' => 'award',
 							'label' => 'Award',
-							'rules' => 'trim|required'
+							'rules' => 'trim|required|is_numeric|max_length[9]'
 					),
 					array(
 							'field' => 'id',

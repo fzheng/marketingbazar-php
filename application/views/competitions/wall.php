@@ -55,7 +55,7 @@
 			</div>
 			<div>
 				<h5>Award:</h5>
-				<p><?= $record['award'] ?></p>
+				<p>$<?= $record['award'] ?></p>
 			</div>						
 		</p>
 		<div>

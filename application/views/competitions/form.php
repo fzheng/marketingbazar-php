@@ -93,8 +93,8 @@
 <h5>End Time</h5>
 <input id="end_at" type="text" name="end_at" value="<?= isset($end_at) ? $end_at : set_value('end_at'); ?>" size="20" />
 
-<h5>Award</h5>
-<input type="text" name="award" value="<?= isset($award) ? $award : set_value('award'); ?>" size="50" />
+<h5>Award ($)</h5>
+<input type="text" name="award" value="<?= isset($award) ? $award : set_value('award'); ?>" size="20" />
 
 <div><input type="submit" value="Submit" /></div>
 
