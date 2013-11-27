@@ -12,12 +12,13 @@ class Main extends CI_Controller {
 	public function Main() {
 		parent::__construct();
 		parse_str($_SERVER['QUERY_STRING'], $_REQUEST);
+        $this->load->model('email_model');
 	}
 
 	function index() {
         $this->load->helper('cookie');
         if(defined('ENVIRONMENT') && ENVIRONMENT === "prod" && !$this->input->cookie(md5("http://www.marketingbazar.com"), TRUE)) {
-            header('HTTP/1.0 404 Not Found'); echo '404 = 400 + 4 = 4 * 101 = 1616 / 4 = YOU'; exit();
+            header('HTTP/1.0 404 Not Found'); echo '<h1>ERROR 404</h1><h2>Page Not Found</h2>'; exit();
         }
 		$sessionData = $this->session->all_userdata();
 		$user_id = array_key_exists('user_id', $sessionData) ? $sessionData['user_id'] : null;
@@ -28,10 +29,18 @@ class Main extends CI_Controller {
             $this->load->view('signup', $sessionData);
         }
         else {
-        	$this->load->library('scorecard');
-        	$sessionData['score'] = $this->scorecard->score($user_id);
-        	$sessionData['rank'] = $this->scorecard->rank($user_id);
-            $this->load->view('home', $sessionData);
+            $result = $this->db->query('select * from users where id = ?', $user_id);
+            if (empty($result->row()->email_salt)) {
+                $this->load->library('scorecard');
+                $sessionData['score'] = $this->scorecard->score($user_id);
+                $sessionData['rank'] = $this->scorecard->rank($user_id);
+                $this->load->view('home', $sessionData);
+            } else {
+                $data = array (
+                    'user_id' => $result->row()->id
+                );
+                $this->load->view('emails/email_not_activate', $data);
+            }
         }
 	}
 
@@ -131,7 +140,7 @@ class Main extends CI_Controller {
             'username' => $_POST['username'],
             'email' => $_POST['email'],
             'pwd_salt' => $_POST['password'],
-            'email_salt' => ''
+            'email_salt' => hash_hmac('sha256', $this->generateRandomString(), 'email_activate')
         );
         $result = $this->db->query("select * from users where username = ? or email = ?", array($userObj['username'], $userObj['email']));
         if ($result->row()) {
@@ -146,13 +155,41 @@ class Main extends CI_Controller {
             $this->db->where('id', $this->session->userdata('auth_id'));
             $this->db->update('auths', $authObj);
             $this->session->set_userdata('user_id', $user_id);
-            
             // add a score record for the user
             $this->load->library('scorecard');
             $this->scorecard->create_user_score($user_id);
-            
+            $this->sendEmailVerification($userObj);
             echo '{"result": true}';
         }
+    }
+
+    public function sendEmailVerification($userObj) {
+        try {
+            $recipient[$userObj["username"]] = $userObj["email"];
+            $activate_link = $this->config->base_url() . 'main/activate/' . $userObj['email_salt'];
+            $data = Array('name' => $userObj["username"], 'activate_link' => $activate_link);
+            $this->email_model->send($recipient, "Please Confirm Your Email Address, %name%", "email_verification", $data);
+        } catch (Exception $e) {
+            echo '{"result" : false, "message": "'. $e->getMessage() . '"}';
+            return;
+        }
+    }
+
+    public function activate($email_salt='') {
+        if (!empty($email_salt)) {
+            $result = $this->db->query("select * from users where email_salt = ?", $email_salt);
+            if ($result->row()) {
+                $this->db->query("update users set email_salt='' where email_salt = ?", $email_salt);
+                $recipient[$result->row()->username] = $result->row()->email;
+                $data = Array('name' => $result->row()->username);
+                $this->email_model->send($recipient, "Welcome to Marketingbazar, %name%", "welcome", $data);
+                header('Location: /');
+                return;
+            }
+        }
+        header('HTTP/1.0 404 Not Found');
+        echo "<h1>ERROR 404</h1><h2>Invalid Address</h2>";
+        return;
     }
 
 	public function logout() {
@@ -265,4 +302,13 @@ class Main extends CI_Controller {
 
         redirect('/', 'refresh');
 	}
+
+    private function generateRandomString($length = 100) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, strlen($characters) - 1)];
+        }
+        return $randomString;
+    }
 }

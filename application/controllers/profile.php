@@ -1,4 +1,5 @@
-<?php 
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
 class Profile extends CI_Controller {
 	public function editprofile() {
 		$this->load->helper ( array (
