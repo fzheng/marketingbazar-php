@@ -149,3 +149,13 @@ CREATE TABLE IF NOT EXISTS scores (
   PRIMARY KEY (id),
   UNIQUE(user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='scores table';
+
+CREATE TABLE IF NOT EXISTS ipaddresses (
+  id INT(11) unsigned NOT NULL AUTO_INCREMENT,
+  ip INT(10) unsigned NOT NULL,
+  flag TINYINT(1) DEFAULT 0,
+  PRIMARY KEY (id, ip)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='ip whitelists flag=1 and blacklists flag=-1';
+/*
+INSERT INTO `ipaddresses` (`ip`, `flag`) VALUES(INET_ATON('192.168.1.2'), 1);
+*/

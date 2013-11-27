@@ -16,9 +16,15 @@ class Main extends CI_Controller {
 	}
 
 	function index() {
-        $this->load->helper('cookie');
-        if(defined('ENVIRONMENT') && ENVIRONMENT === "prod" && !$this->input->cookie(md5("http://www.marketingbazar.com"), TRUE)) {
-            header('HTTP/1.0 404 Not Found'); echo '<h1>ERROR 404</h1><h2>Page Not Found</h2>'; exit();
+        if(defined('ENVIRONMENT') && ENVIRONMENT === "prod") {
+            $this->load->library('session');
+            $current_ip = ip2long($this->session->userdata('ip_address'));
+            $result = $this->db->query('select * from ipaddresses where ip = ?', $current_ip);
+            if (!$result->row() || $result->row()->flag <=0) {
+                header('HTTP/1.0 404 Not Found');
+                echo '<h1>404, Page NOT Found</h1><h2>Sorry, the Website is still Under Construction</h2>';
+                exit();
+            }
         }
 		$sessionData = $this->session->all_userdata();
 		$user_id = array_key_exists('user_id', $sessionData) ? $sessionData['user_id'] : null;
