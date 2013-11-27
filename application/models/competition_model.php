@@ -53,7 +53,7 @@ class Competition_model extends CI_Model {
   }
   
   function get_active_competitions() {
-  	$sql = "SELECT id, name, begin_at, end_at FROM competitions ORDER BY end_at";
+  	$sql = "SELECT id, name, begin_at, end_at FROM competitions WHERE end_at > NOW() ORDER BY end_at";
   	$query = $this->db->query($sql);
   	return $query->result_array();
   }

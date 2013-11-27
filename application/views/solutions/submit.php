@@ -1,10 +1,7 @@
-<!doctype html>
-<html>
-<head>
+
    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
    <link href="/www/css/ajaxfileupload.css" rel="stylesheet" />
-</head>
-<body>
+   
    <h1>Upload File</h1>
    <form method="post" action="/solutions/upload" enctype="multipart/form-data" >
       <label for="title">Title</label>
@@ -51,5 +48,4 @@
 		}
 	?>
    </div>
-</body>
-</html>
+   

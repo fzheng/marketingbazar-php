@@ -1,8 +1,4 @@
-<html>
-<head>
-<title>Consultant Profile</title>
-</head>
-<body>
+
 <h1>Your Profile Information</h1>
 
 <?php if(isset($validation_error) && $validation_error === TRUE) echo validation_errors(); ?>
@@ -86,5 +82,3 @@
 <div><input type="submit" value="Submit" /></div>
 
 </form>
-</body>
-</html>

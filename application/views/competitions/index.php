@@ -1,8 +1,4 @@
-<html>  
-	<head>  
-        <title>Competitions</title>  
-    </head>  
-    <body>  
+ 
     	<p>Your Created Competitions</p>
     	<div>
     	<?php if (!empty($records)): ?>
@@ -50,6 +46,5 @@
         	<?php endforeach; ?>
 			</table>
 		<?php endif; ?>
-    	</div>   	
-    </body>  
-</html>  
+    	</div>
+    	  

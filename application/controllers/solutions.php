@@ -14,7 +14,7 @@ class Solutions extends Sessions_Controller {
 	function submit($competition_id) {
 		$data['competition_id'] = $competition_id;
 		$data['solutions'] = $this->solution_model->get_submitted_solutions($this->_current_user_id(), $competition_id);
-		$this->load->view('solutions/submit', $data);
+		$this->_load_complete_view('solutions/submit', $data);
 	}
 	
 	function show($competition_id) {
@@ -23,10 +23,10 @@ class Solutions extends Sessions_Controller {
 		$is_owner = $this->competition_model->is_owner($this->_current_user_id(), $competition_id);
 		if(!$is_owner) {
 			$data['error_msg'] = 'You are not allowed to view solutions for this competition!';
-			$this->load->view('solutions/show', $data);
+			$this->_load_complete_view('solutions/show', $data);
 		} else {
 			$data['solutions'] = $this->solution_model->get_solutions_for_competition($competition_id);
-			$this->load->view('solutions/show', $data);
+			$this->_load_complete_view('solutions/show', $data);
 		}		
 	}
 	
@@ -90,7 +90,7 @@ class Solutions extends Sessions_Controller {
 		$is_owner = $this->competition_model->is_owner($this->_current_user_id(), $competition_id);
 		if(!$is_owner) {
 			$data['error_msg'] = 'You are not allowed to view this solution!';
-			$this->load->view('solutions/show', $data);
+			$this->_load_complete_view('solutions/show', $data);
 		} else {
 			$solution = $this->solution_model->get_solution($solution_id);
 			$this->_download_file($solution->file_path);

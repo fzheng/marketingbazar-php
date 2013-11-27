@@ -1,8 +1,4 @@
-<html>  
-	<head>  
-        <title>Active Competitions</title>  
-    </head>  
-    <body>  
+  
     	<p>
     		<h1>Active Competitions</h1>
     	</p>
@@ -26,5 +22,4 @@
 			</table>
 		<?php endif; ?>
     	</div>  
-    </body>  
-</html>  
+  

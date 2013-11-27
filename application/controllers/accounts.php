@@ -16,7 +16,7 @@ class Accounts extends Sessions_Controller {
 		if (isset($_POST['profile_form'])) {
 			if ($this->form_validation->run() == FALSE) {
 				$result['validation_error'] = TRUE;
-				$this->load->view('accounts/profile', $result);
+				$this->_load_complete_view('accounts/profile', $result);
 			} else {
 				$post_data = $this->_get_profile_post_data();
 				$this->account_model->insert_update_profile($post_data, $this->input->post('id'));
@@ -24,7 +24,7 @@ class Accounts extends Sessions_Controller {
 			}		
 		} else {
 			$profile = $this->account_model->get_profile_for($this->_current_user_id());
-			$this->load->view('accounts/profile', $profile);
+			$this->_load_complete_view('accounts/profile', $profile);
 		}
 
 	}	

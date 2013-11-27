@@ -1,5 +1,4 @@
-<html>
-	<body>
+
 		<h1>Competition: <?= $record['name'] ?></h1>
 		<?php if(isset($show_sign_up) && $show_sign_up === true):?>
 		<p>
@@ -56,7 +55,7 @@
 			</div>
 			<div>
 				<h5>Award:</h5>
-				<p><?= $record['award'] ?></p>
+				<p>$<?= $record['award'] ?></p>
 			</div>						
 		</p>
 		<div>
@@ -78,5 +77,4 @@
 				<div><input type="submit" value="Add Comment" /></div>
 			</form>
 		</div>
-	</body>
-</html>
+		
