@@ -23,7 +23,7 @@ class Paypalpayment {
     			'Primary'          => ''								          // Whether this receiver is the primary receiver.  Values are boolean:  TRUE, FALSE
     	);
     	
-    	$paypal_result = $this->execute_payment('USD', 'EACHRECEIVER', $receivers, 'https://marketingbazar.com/payment');
+    	$paypal_result = $this->execute_payment('USD', 'EACHRECEIVER', $receivers, 'https://www.marketingbazar.com/competitions');
     	
     	if($paypal_result['Ack'] == 'Failure') {
     		log_message('error', $paypal_result['Errors'][0]['Message']);
