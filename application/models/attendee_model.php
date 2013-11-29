@@ -22,4 +22,10 @@ class Attendee_model extends CI_Model {
   	$query = $this->db->query($sql, array($user_id));
   	return $query->result_array();
   }
+  
+  function get_attendees_for($competition_id) {
+  	$sql = 'SELECT users.username, users.email FROM attendees JOIN users ON attendees.user_id = users.id WHERE attendees.competition_id = ?';
+  	$query = $this->db->query($sql, array($competition_id));
+  	return $query->result_array();
+  }
 }

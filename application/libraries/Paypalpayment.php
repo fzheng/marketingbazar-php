@@ -14,8 +14,8 @@ class Paypalpayment {
     	$receivers = array();
 
     	$receivers[] = array(
-    			'Amount'           => $post['payment'], // Required.  Amount to be paid to the receiver.
-    			'Email'            => $post['user_address'], 	 // Receiver's email address. 127 char max.
+    			'Amount'           => $post['amount'], // Required.  Amount to be paid to the receiver.
+    			'Email'            => $post['email'], 	 // Receiver's email address. 127 char max.
     			'InvoiceID'        => '', 						 // The invoice number for the payment.  127 char max.
     			'PaymentType'      => 'SERVICE', 				 // Transaction type.  Values are:  GOODS, SERVICE, PERSONAL, CASHADVANCE, DIGITALGOODS
     			'PaymentSubType'   => '', 						 // The transaction subtype for the payment.

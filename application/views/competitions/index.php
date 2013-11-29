@@ -16,7 +16,8 @@
             		<td><?php echo $record['end_at']?></td>
                 	<td>
                 	<a href="/competitions/edit/<?= $record['id']?>">Edit</a> &nbsp;&nbsp;
-                	<a href="/solutions/show/<?= $record['id']?>">Submitted Solutions</a>
+                	<a href="/solutions/show/<?= $record['id']?>">Submitted Solutions</a> &nbsp;&nbsp;
+                	<a href="/payment/payout/<?= $record['id']?>">Pay Winner</a>
                 	</td>
             	</tr> 
         	<?php endforeach; ?>
