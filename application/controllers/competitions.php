@@ -85,7 +85,10 @@ class Competitions extends Sessions_Controller {
 			redirect('competitions/wall/' . $data['competition_id']);
 			exit;
 		}
-		$this->comment_model->add_comment($data);
+		$result = $this->comment_model->add_comment($data);
+		if($result) {
+			$this->_notify_attendees_wall_post($data['competition_id']);
+		}
 		redirect('competitions/wall/' . $data['competition_id']);
 	}
 	
@@ -122,6 +125,24 @@ class Competitions extends Sessions_Controller {
 			'award' => $this->input->post('award')								
 		);
 		return $data;
+	}
+	
+	function _notify_attendees_wall_post($competition_id) {
+		$this->load->model('attendee_model');
+		$this->load->model('email_model');
+		$attendants = $this->attendee_model->get_attendees_for($competition_id);
+		$recipients = array();
+		foreach ($attendants as $attendant) {
+			$recipients[$attendant['username']] = $attendant['email'];
+		}
+		$record = $this->competition_model->get_owner($competition_id);
+		$recipients[$record['username']] = $record['email'];
+		$data['competition_id'] = $competition_id;
+		try {
+			$this->email_model->send($recipients, '%name%, you have a notification', 'wall_post_notification', $data);
+		} catch (Exception $e) {
+			
+		}
 	}
 	
 	

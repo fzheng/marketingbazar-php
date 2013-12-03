@@ -68,6 +68,12 @@ class Competition_model extends CI_Model {
     //return $this->db->count_all($this->table);
   }
   
+  function get_owner($competition_id) {
+  	$sql = 'SELECT users.username, users.email FROM competitions JOIN users ON competitions.user_id = users.id WHERE competitions.id = ?';
+  	$query = $this->db->query($sql, $competition_id);
+  	return $query->row_array();
+  }
+  
   function is_owner($user_id, $competition_id) {
   	$row = $this->db->select()
   	->from($this->table)
