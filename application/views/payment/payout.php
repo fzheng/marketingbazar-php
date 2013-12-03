@@ -20,7 +20,7 @@ Payment Amount: $<?= $competition['award'] ?>
 <img id="loader" src="/www/images/20loader.gif" style="margin-left: 5px; display:none;"/>
 </form>
 
-<form id="execute_payment_form" action="javascript:void(0);" method="post" target="PPDGFrame" style="display: none;">
+<form id="execute_payment_form" action="javascript:void(0);" method="post" style="display: none;">
    <input id="execute_payment" type="submit" name="execute_payment" value="Execute payment with PayPal" disabled="disabled" />
 </form>
 <?php endif; ?>
@@ -32,7 +32,7 @@ Payment Amount: $<?= $competition['award'] ?>
 $(function() {
 	$('#prepare_payment').off('click').on('click', function(e) {
 		e.preventDefault();
-		var paypal_api = "https://www.sandbox.paypal.com/webapps/adaptivepayment/flow/pay?expType=light&payKey=";
+		var paypal_api = "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey=";
 		var ajaxurl = '/payment/prepare';
 		var amount = $('#amount').val();
 		var email = $('input[name=winner_email]:checked', '#prepare_payment_form').val();
@@ -70,7 +70,7 @@ $(function() {
 			  	//Initialize PayPal embedded payment flow. 
 			   	// Not loading it on document ready so that we only have it if user prepares payment, 
 			   	// not just loads the page ...
-			   	var dgFlow = new PAYPAL.apps.DGFlowMini({trigger: "execute_payment"});
+			   	//var dgFlow = new PAYPAL.apps.DGFlowMini({trigger: "execute_payment"});
 
 			   	//Store PayKey in the form action and enable execute payment button
 			   	$("#execute_payment_form").attr("action", paypal_api + response.paykey);
